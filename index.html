@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Esquiva</title>
+
+<style>
+  body { background:#D96C80; margin:0; overflow:hidden; }
+
+  #jugador {
+    width:50px; height:50px; background:#BFB74B;
+    position:absolute; bottom:10px; left:150px;
+  }
+
+  #enemigo {
+    width:50px; height:50px; background:#BF2A52;
+    position:absolute; top:0; left:100px;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="jugador"></div>
+<div id="enemigo"></div>
+
+<script>
+  // AHORA USANDO querySelector
+  const jugador = document.querySelector("#jugador");
+  const enemigo = document.querySelector("#enemigo");
+
+  let xJugador = 150;
+  let yEnemigo = 0;
+  let xEnemigo = 100;
+
+  // Mover jugador
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "ArrowLeft")  xJugador -= 20;
+    if (e.key === "ArrowRight") xJugador += 20;
+
+    jugador.style.left = xJugador + "px";
+  });
+
+  // Caída del enemigo
+  function caer() {
+    yEnemigo += 4;
+    enemigo.style.top = yEnemigo + "px";
+
+    // Reinicia cuando llega al fondo
+    if (yEnemigo > window.innerHeight) {
+      yEnemigo = 0;
+      xEnemigo = Math.random() * (window.innerWidth - 50);
+      enemigo.style.left = xEnemigo + "px";
+    }
+
+    // Colisión 
+    if (
+      yEnemigo > window.innerHeight - 80 &&
+      xEnemigo < xJugador + 50 &&
+      xEnemigo + 50 > xJugador
+    ) {
+      alert("perdiste...lol");
+      yEnemigo = 0;
+    }
+
+    requestAnimationFrame(caer);
+  }
+
+  caer();
+</script>
+
+</body>
+</html>
